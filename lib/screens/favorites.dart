@@ -1,36 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:hyrule/controllers/api_controller.dart';
+import 'package:hyrule/controllers/dao_controller.dart';
 import 'package:hyrule/screens/components/entry_card.dart';
-import 'package:hyrule/screens/favorites.dart';
-import 'package:hyrule/utils/consts/categories.dart';
 
-class Results extends StatelessWidget {
-  Results({super.key, required this.category});
-  final String category;
+class Favorites extends StatelessWidget {
+ Favorites({super.key});
 
-  final ApiController apiController = ApiController();
+  final DaoController daoController = DaoController();
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            title: Text(categories[category]!),
-            actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Favorites(),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.bookmark_outline))
-          ],
+            title: const Text("Itens salvos"),
           ),
           body: FutureBuilder(
-            future: apiController.getEntriesByCategory(category: category),
+            future: daoController.getSavedEntries(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.active:
@@ -41,7 +26,7 @@ class Results extends StatelessWidget {
                   if (snapshot.hasData) {
                     return ListView.builder(
                         itemBuilder: (context, index) =>
-                            EntryCard(entry: snapshot.data![index], isSaved: false), itemCount: snapshot.data!.length,);
+                            EntryCard(entry: snapshot.data![index], isSaved: true), itemCount: snapshot.data!.length,);
                   }
                 case ConnectionState.waiting:
                   return const Center(
