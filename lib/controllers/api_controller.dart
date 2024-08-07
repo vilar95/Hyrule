@@ -1,4 +1,4 @@
-import 'package:hyrule/data/dao/api/data_api.dart';
+import 'package:hyrule/data/api/data_api.dart';
 import 'package:hyrule/domain/business/api_workflow.dart';
 import 'package:hyrule/domain/models/entry.dart';
 
