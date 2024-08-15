@@ -106,19 +106,24 @@ class _ListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding:
-          const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      leading: Container(
-          clipBehavior: Clip.hardEdge,
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.0)),
-          child: Image.network(entry.image)),
-      title: Text(
-        entry.name.toUpperCase(),
-        style: const TextStyle(fontSize: 21.0, fontFamily: 'Philosopher'),
+    return OpenContainer(
+      closedColor: Colors.transparent,
+      openColor: Colors.transparent,
+      transitionType: ContainerTransitionType.fadeThrough,
+      closedBuilder: (context, action) => ListTile(
+        contentPadding:
+            const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        leading: Container(
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(4.0)),
+            child: Image.network(entry.image)),
+        title: Text(
+          entry.name.toUpperCase(),
+          style: const TextStyle(fontSize: 21.0, fontFamily: 'Philosopher'),
+        ),
+        onTap: action,
       ),
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Details(entry: entry))),
+      openBuilder: (context, action) => Details(entry: entry),
     );
   }
 }

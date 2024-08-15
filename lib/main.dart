@@ -22,7 +22,7 @@ class Hyrule extends StatelessWidget {
             transitionType: SharedAxisTransitionType.horizontal,
           ),
         }),
-        colorSchemeSeed: Colors.blue,
+        colorSchemeSeed: Colors.brown,
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
