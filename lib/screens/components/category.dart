@@ -5,14 +5,25 @@ import 'package:hyrule/utils/consts/categories.dart';
 
 import '../../domain/models/entry.dart';
 
-class Category extends StatelessWidget {
-  Category({Key? key, required this.category}) : super(key: key);
+class Category extends StatefulWidget {
+  const Category({Key? key, required this.category, this.isHighlight = false})
+      : super(key: key);
   final String category;
+  final bool isHighlight;
 
+  @override
+  State<Category> createState() => _CategoryState();
+}
+
+class _CategoryState extends State<Category> with SingleTickerProviderStateMixin {
   final ApiController apiController = ApiController();
 
-  Future<List<Entry>> getEntries() async {
-    return await apiController.getEntriesByCategory(category: category);
+  late AnimationController _animationController;
+
+  @override
+  void initState() {
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    super.initState();
   }
 
   @override
@@ -27,7 +38,7 @@ class Category extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) =>
-                        Results(entries: value, category: category),
+                        Results(entries: value, category: widget.category),
                   ),
                 ),
               );
@@ -48,22 +59,34 @@ class Category extends StatelessWidget {
                             .withOpacity(0.2),
                         blurStyle: BlurStyle.outer),
                   ]),
-              child: Center(
-                child: Image.asset("$imagePath$category.png"),
-                
+              child: ScaleTransition(
+                alignment: Alignment.center,
+                scale: _animationController,
+                child: Center(
+                  child: Image.asset(
+                    "$imagePath${widget.category}.png",
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ),
             ),
           ),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 10.0),
-          child: Text(categories[category]!,
-              style: Theme.of(context).textTheme.titleLarge!.copyWith(
+          child: Text(
+            categories[widget.category]!,
+            style: Theme.of(context).textTheme.titleLarge!.copyWith(
                   color: Colors.white.withAlpha(200),
                   fontWeight: FontWeight.bold,
-                ),),
+                ),
+          ),
         ),
       ],
     );
+  }
+
+  Future<List<Entry>> getEntries() async {
+    return await apiController.getEntriesByCategory(category: widget.category);
   }
 }

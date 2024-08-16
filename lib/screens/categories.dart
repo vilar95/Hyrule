@@ -33,7 +33,7 @@ const Categories({ Key? key }) : super(key: key);
               mainAxisExtent: 193,
             ),
             children: 
-              categories.keys.map((e) => Category(category: e)).toList()
+              categories.keys.map((e) => Category(category: e, isHighlight: e == "monsters",)).toList()
             ,
           ),
         ),
